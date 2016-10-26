@@ -30,7 +30,7 @@ public class PassengerServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         //AHA.connect("jdbc:oracle:thin:@192.168.56.101:1521:XE", "AHA", "aha1234");
-    AHA.connect("jdbc:mysql://localhost:3306/AHA", "root", "");
+    AHA.connect("jdbc:mysql://localhost:3306/AHA", "AHA", "aha1234");
     }
 
     @Override
@@ -50,7 +50,7 @@ public class PassengerServlet extends HttpServlet {
 
             case "getPassengerById":
                 String id = req.getParameter("id");
-                Passenger passengerId = passengerRepository.getPassengerById(Integer.getInteger(id));
+                Passenger passengerId = passengerRepository.getPassengerById(Integer.parseInt(id));
 
                 if (passengerId != null) {
                    writer.write(gson.toJson(passengerId));
