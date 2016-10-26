@@ -30,9 +30,10 @@ public class AirportServlet extends HttpServlet {
     
     @Override
     public void init() throws ServletException {
-        AHA.connect("jdbc:oracle:thin:@192.168.56.101:1521:XE", "AHA", "aha1234");}
-        
-     @Override
+        //AHA.connect("jdbc:oracle:thin:@192.168.56.101:1521:XE", "AHA", "aha1234");}
+        AHA.connect("jdbc:mysql://localhost:3306/AHA", "root", "");
+    }
+        @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         PrintWriter writer = resp.getWriter();
