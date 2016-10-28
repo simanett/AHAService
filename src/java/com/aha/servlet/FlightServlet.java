@@ -62,7 +62,7 @@ public class FlightServlet extends HttpServlet {
 
             case "getFlightByFlightNumber":
                 String number = req.getParameter("number");
-                Flight flight = flightRepository.getFlightByFlightNumber(Integer.getInteger(number));
+                Flight flight = flightRepository.getFlightByFlightNumber(Integer.parseInt(number));
 
                 if (flight != null) {
                     writer.write(gson.toJson(flight));
@@ -74,7 +74,7 @@ public class FlightServlet extends HttpServlet {
 
             case "getFlightById":
                 String id = req.getParameter("id");
-                Flight flightById = flightRepository.getFlightById(Integer.getInteger(id));
+                Flight flightById = flightRepository.getFlightById(Integer.parseInt(id));
 
                 if (id != null) {
                     writer.write(gson.toJson(id));

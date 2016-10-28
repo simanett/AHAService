@@ -46,7 +46,7 @@ public class EmployeeServlet extends HttpServlet {
 
             case "getEmployeeById":
                 String id = req.getParameter("id");
-                Employee employee = employeeRepository.getEmployeeById(Integer.getInteger(id));
+                Employee employee = employeeRepository.getEmployeeById(Integer.parseInt(id));
 
                 if (employee != null) {
                     writer.write(gson.toJson(employee));

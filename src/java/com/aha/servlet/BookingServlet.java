@@ -66,7 +66,7 @@ public class BookingServlet extends HttpServlet {
 
             case "getActiveBookingsByPassenger":
                 String activePassengerId = req.getParameter("activePassengerId");
-                Passenger activePassenger = passengerRepository.getPassengerById(Integer.getInteger(activePassengerId));
+                Passenger activePassenger = passengerRepository.getPassengerById(Integer.parseInt(activePassengerId));
                 List<Booking> bookingsByActivePassangers = bookingRepository.getActiveBookingsByPassenger(activePassenger);
 
                 writer.write(gson.toJson(bookingsByActivePassangers));
@@ -75,7 +75,7 @@ public class BookingServlet extends HttpServlet {
 
             case "getApprovedBookingsByPassenger":
                 String approvedPassengerId = req.getParameter("activePassengerId");
-                Passenger approvedPassenger = passengerRepository.getPassengerById(Integer.getInteger(approvedPassengerId));
+                Passenger approvedPassenger = passengerRepository.getPassengerById(Integer.parseInt(approvedPassengerId));
 
                 List<Booking> bookingsByApprovedPassenger = bookingRepository.getApprovedBookingsByPassenger(approvedPassenger);
                 writer.write(gson.toJson(bookingsByApprovedPassenger));
@@ -84,7 +84,7 @@ public class BookingServlet extends HttpServlet {
 
             case "getPendingBookingsByPassenger":
                 String pendingPassengerId = req.getParameter("pendingPassengerId");
-                Passenger pendingPassenger = passengerRepository.getPassengerById(Integer.getInteger(pendingPassengerId));
+                Passenger pendingPassenger = passengerRepository.getPassengerById(Integer.parseInt(pendingPassengerId));
 
                 List<Booking> bookingsByPendingPassenger = bookingRepository.getApprovedBookingsByPassenger(pendingPassenger);
                 writer.write(gson.toJson(bookingsByPendingPassenger));

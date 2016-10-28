@@ -51,7 +51,7 @@ public class UserServlet extends HttpServlet {
 
             case "getUserById":
                 String id = req.getParameter("id");
-                User user = userRepository.getUserById(Integer.getInteger(id));
+                User user = userRepository.getUserById(Integer.parseInt(id));
 
                 if (user != null) {
                     writer.write(gson.toJson(user));
