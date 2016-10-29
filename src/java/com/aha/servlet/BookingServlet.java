@@ -43,6 +43,7 @@ public class BookingServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
 
         resp.setContentType("application/json");
+        resp.addHeader("Access-Control-Allow-Origin", "*");
         resp.setCharacterEncoding("UTF-8");
         Gson gson = new Gson();
 
