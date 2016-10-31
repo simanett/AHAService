@@ -9,8 +9,10 @@ import com.aha.AHA;
 import com.aha.businesslogic.model.Airplane;
 import com.aha.data.AirplaneRepository;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -38,10 +40,8 @@ public class AirplaneServlet extends HttpServlet {
         resp.setContentType("application/json");
         resp.addHeader("Access-Control-Allow-Origin", "*");
         resp.setCharacterEncoding("UTF-8");
-        Gson gson = new Gson();
+        Gson gson = GsonUtils.getGson();
 
-       
-        
         switch (action) {
             case "getAirplanes":
                 List<Airplane> airplanes = airplaneRepository.getAirplanes();
@@ -54,7 +54,7 @@ public class AirplaneServlet extends HttpServlet {
                 Airplane airplane = airplaneRepository.getAirplaneByModel(model);
 
                 if (airplane != null) {
-                     writer.write(gson.toJson(airplane));
+                    writer.write(gson.toJson(airplane));
                 } else {
                     System.out.println("Invalid airplane model");
                 }

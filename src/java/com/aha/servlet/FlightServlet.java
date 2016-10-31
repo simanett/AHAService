@@ -11,6 +11,13 @@ import com.aha.data.FlightRepository;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -30,7 +37,12 @@ public class FlightServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         //AHA.connect("jdbc:oracle:thin:@192.168.56.101:1521:XE", "AHA", "aha1234");
-    AHA.connect("jdbc:mysql://localhost:3306/AHA", "AHA", "aha1234");
+        AHA.connect("jdbc:mysql://localhost:3306/AHA", "AHA", "aha1234");
+    }
+
+    private Date getDate(String dateString) throws ParseException {
+        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
+        return df1.parse(dateString);
     }
 
     @Override
@@ -40,25 +52,32 @@ public class FlightServlet extends HttpServlet {
         resp.setContentType("application/json");
         resp.addHeader("Access-Control-Allow-Origin", "*");
         resp.setCharacterEncoding("UTF-8");
-        Gson gson = new Gson();
+        Gson gson = GsonUtils.getGson();
 
         switch (action) {
             case "getFlights":
                 List<Flight> flights = flightRepository.getFlights();
-//                for (Flight flight : flights) {
-//                    writer.write(flight.toString());
-//                    writer.write("\n");
-//                }
-
                 writer.write(gson.toJson(flights));
 
                 break;
 
             case "getFilteredFlights":
-                List<Flight> filteredFlights = flightRepository.getFlights();
-                for (Flight filteredFlight : filteredFlights) {
-                    writer.write(filteredFlight.toString());
-                    writer.write("\n");
+                try {
+                    String fromCode = req.getParameter("from");
+                    String toCode = req.getParameter("to");
+
+                    Date fromDate = getDate(req.getParameter("start"));
+                    Date toDate = getDate(req.getParameter("end"));
+
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(toDate);
+                    cal.add(Calendar.DATE, 1);  // number of days to add
+                    
+                    List<Flight> filteredFlights = flightRepository.getFilteredFlights(fromCode, toCode, fromDate, cal.getTime());
+                    writer.write(gson.toJson(filteredFlights));
+                } catch (ParseException ex) {
+                    resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    writer.write(gson.toJson(ex));
                 }
 
             case "getFlightByFlightNumber":
@@ -68,8 +87,8 @@ public class FlightServlet extends HttpServlet {
                 if (flight != null) {
                     writer.write(gson.toJson(flight));
                 } else {
-                    
-                    System.out.println("Invalid flight number");
+                    resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    writer.write("{}");
                 }
                 break;
 
@@ -78,9 +97,10 @@ public class FlightServlet extends HttpServlet {
                 Flight flightById = flightRepository.getFlightById(Integer.parseInt(id));
 
                 if (id != null) {
-                    writer.write(gson.toJson(id));
+                    writer.write(gson.toJson(flightById));
                 } else {
-                    System.out.println("Invalid flight ID");
+                    resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    writer.write("{}");
                 }
                 break;
         }

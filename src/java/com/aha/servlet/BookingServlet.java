@@ -45,7 +45,7 @@ public class BookingServlet extends HttpServlet {
         resp.setContentType("application/json");
         resp.addHeader("Access-Control-Allow-Origin", "*");
         resp.setCharacterEncoding("UTF-8");
-        Gson gson = new Gson();
+        Gson gson = GsonUtils.getGson();
 
         switch (action) {
             case "getBookings":
