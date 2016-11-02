@@ -63,8 +63,8 @@ public class FlightServlet extends HttpServlet {
 
             case "getFilteredFlights":
                 try {
-                    String fromCode = req.getParameter("from");
-                    String toCode = req.getParameter("to");
+                    String fromCity = req.getParameter("from");
+                    String toCity = req.getParameter("to");
 
                     Date fromDate = getDate(req.getParameter("start"));
                     Date toDate = getDate(req.getParameter("end"));
@@ -73,7 +73,7 @@ public class FlightServlet extends HttpServlet {
                     cal.setTime(toDate);
                     cal.add(Calendar.DATE, 1);  // number of days to add
                     
-                    List<Flight> filteredFlights = flightRepository.getFilteredFlights(fromCode, toCode, fromDate, cal.getTime());
+                    List<Flight> filteredFlights = flightRepository.getFilteredFlights(fromCity, toCity, fromDate, cal.getTime());
                     writer.write(gson.toJson(filteredFlights));
                 } catch (ParseException ex) {
                     resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
