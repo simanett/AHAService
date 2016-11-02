@@ -79,6 +79,8 @@ public class FlightServlet extends HttpServlet {
                     resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     writer.write(gson.toJson(ex));
                 }
+                
+                break;
 
             case "getFlightByFlightNumber":
                 String number = req.getParameter("number");
