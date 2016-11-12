@@ -15,6 +15,7 @@ import java.io.PrintWriter;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author simonicsanett
  */
+@WebServlet(name = "AirplaneServlet", urlPatterns = {"/AirplaneServlet"})
 public class AirplaneServlet extends HttpServlet {
 
     AirplaneRepository airplaneRepository = new AirplaneRepository();
@@ -38,7 +40,6 @@ public class AirplaneServlet extends HttpServlet {
         String action = req.getParameter("action");
         PrintWriter writer = resp.getWriter();
         resp.setContentType("application/json");
-        resp.addHeader("Access-Control-Allow-Origin", "*");
         resp.setCharacterEncoding("UTF-8");
         Gson gson = GsonUtils.getGson();
 
